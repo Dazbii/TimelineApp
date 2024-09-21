@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import styled from "styled-components";
+
+const Header = styled.header`
+  position: fixed;
+  top: 0;
+  text-align: center;
+  width: 100vw;
+`
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+`;
+
+const Item = styled.div`
+  width: 50vw;
+  text-align: center;
+`;
+
+const HorizontalLine = styled.div`
+  width: 100%;
+  background-color: white;
+  height: 2px;
+`
+
+const items = ['2020', '2021', '2022', '2023', '2024'];
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = (event: Event) => {
+      if (event instanceof WheelEvent) {
+        const scrollAmount = event.deltaY * 4;
+        window.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    window.addEventListener('wheel', handleScroll);
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+    }
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <Header>
+        <h1> Timeline </h1>
+      </Header>
+      <HorizontalLine/>
+      <Container>
+        {items.map(item => {
+          return <Item>{item}</Item>
+        })}
+      </Container>
+    </div>
+  );
 }
 
-export default App
+export default App;
