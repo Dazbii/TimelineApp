@@ -5,7 +5,7 @@
   "homepage": "https://dazbii.github.io/TimelineApp",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "vite build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "tsc -b && vite build",
