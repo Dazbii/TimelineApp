@@ -30,12 +30,11 @@ const HorizontalLine = styled.div`
   height: 2px;
 `
 
-const items = new Array<TimelineItem>
-
 function App() {
   const [open, setOpen] = useState(false);
   const [label, setLabel] = useState('');
   const [date, setDate] = useState(0);
+  const [items, setItems] = useState<TimelineItem[]>([]);
 
   const toggleDrawer =
   (inOpen: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -51,12 +50,12 @@ function App() {
   };
 
   const addItem = () => {
-    items.push({label: label, date: date});
-    items.sort((a, b) => {
-      if (a.date < b.date) return -1;
-      if (a.date > b.date) return 1;
-      return 0
-    });
+    setItems(new Array<TimelineItem>().concat(items, [{label: label, date: date}])
+      .sort((a, b) => {
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return 0
+    }));
   }
 
   useEffect(() => {
@@ -79,8 +78,8 @@ function App() {
   return (
     <div>
       <Header> 
-          <IconButton onClick={toggleDrawer(true)} sx={{marginLeft: 5, height: 1}} variant="outlined"> <Menu/> </IconButton>
-          <h2 style={{width: '100%'}}> Timeline </h2>
+        <IconButton onClick={toggleDrawer(true)} sx={{marginLeft: 5, height: 1}} variant="outlined"> <Menu/> </IconButton>
+        <h2 style={{width: '100%'}}> Timeline </h2>
       </Header>
       <Drawer open = {open} onClose={() => setOpen(false)} hideBackdrop={true}>
           <ModalClose/>
